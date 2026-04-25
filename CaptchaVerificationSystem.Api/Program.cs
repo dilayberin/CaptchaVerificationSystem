@@ -1,22 +1,53 @@
-using CaptchaVerificationSystem.Application;
-using CaptchaVerificationSystem.Persistence;
+using CaptchaVerificationSystem.Application.Interfaces.Services;
+using CaptchaVerificationSystem.Application.Services;
+using CaptchaVerificationSystem.Application.Interfaces.Repositories;
+using CaptchaVerificationSystem.Persistence.Repositories;
+using CaptchaVerificationSystem.Persistence.Context;
+
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-// API servisleri
+// --------------------
+// CONTROLLERS
+// --------------------
 builder.Services.AddControllers();
+
+// --------------------
+// SWAGGER
+// --------------------
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// --------------------
+// DATABASE (POSTGRESQL)
+// --------------------
+builder.Services.AddDbContext<CaptchaDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// --------------------
+// REPOSITORIES
+// --------------------
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+// --------------------
+// SERVICES
+// --------------------
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<ICaptchaAttemptService, CaptchaAttemptService>();
+builder.Services.AddScoped<ICaptchaGenerationService, CaptchaGenerationService>();
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+
 var app = builder.Build();
 
-// Middleware pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// --------------------
+// MIDDLEWARE PIPELINE
+// --------------------
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

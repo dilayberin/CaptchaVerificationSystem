@@ -11,7 +11,7 @@ public class CaptchaDbContextFactory: IDesignTimeDbContextFactory<CaptchaDbConte
         var optionsBuilder = new DbContextOptionsBuilder<CaptchaDbContext>();
 
         optionsBuilder.UseNpgsql(
-            "Host=localhost;Port=5432;Database=CarpetDb;Username=postgres;Password=123456");
+            "Host=localhost;Port=5432;Database=CaptchaDb;Username=postgres;Password=123456");
 
         return new CaptchaDbContext(optionsBuilder.Options);
     }

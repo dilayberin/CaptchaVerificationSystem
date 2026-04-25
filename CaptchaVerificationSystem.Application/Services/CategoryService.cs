@@ -24,10 +24,12 @@ public class CategoryService : ICategoryService
             .FindByCondition(x => x.IsActive, false)
             .ToListAsync();
 
-        return categories.Select(category => new CategoryDto //VT SORGUSU
+        return categories.Select(category => new CategoryDto //vt sorgusu
         {
             Id = category.Id,
-            Name = category.Name
+            Name = category.Name,
+            DisplayName = category.DisplayName,
+            IsActive = category.IsActive
         });
     }
 
@@ -43,7 +45,9 @@ public class CategoryService : ICategoryService
         return new CategoryDto
         {
             Id = category.Id,
-            Name = category.Name
+            Name = category.Name,
+            DisplayName = category.DisplayName,
+            IsActive = category.IsActive
         };
     }
 
@@ -53,6 +57,7 @@ public class CategoryService : ICategoryService
         {
             Id = Guid.NewGuid(), //rastgele Id üretir
             Name = dto.Name,
+            DisplayName = dto.DisplayName,
             IsActive = true
         };
 
@@ -63,7 +68,9 @@ public class CategoryService : ICategoryService
         var result = new CategoryDto
         {
             Id = category.Id,                    //Category entity->CategoryDto
-            Name = category.Name
+            Name = category.Name,
+            DisplayName = dto.DisplayName,
+            IsActive = true
         };
 
         return result;
