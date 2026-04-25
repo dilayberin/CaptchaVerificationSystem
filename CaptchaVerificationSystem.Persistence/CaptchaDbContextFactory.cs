@@ -1,8 +1,8 @@
-﻿using CaptchaVerificationSystem.Persistance.Context;
+﻿using CaptchaVerificationSystem.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace CaptchaVerificationSystem.Persistance;
+namespace CaptchaVerificationSystem.Persistence;
 
 public class CaptchaDbContextFactory: IDesignTimeDbContextFactory<CaptchaDbContext>
 {

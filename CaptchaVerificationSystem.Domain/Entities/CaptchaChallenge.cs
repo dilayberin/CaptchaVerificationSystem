@@ -6,7 +6,6 @@ public class CaptchaChallenge:BaseEntity
 {
     public int TargetCategoryId { get; set; } //hedef kategori
     public string QuestionText { get; set; } = null!;
-    public DateTime CreatedAt { get; set; }
     public DateTime ExpiresAt { get; set; } //geçerlilik tarihi
     public bool IsSolved { get; set; }
     

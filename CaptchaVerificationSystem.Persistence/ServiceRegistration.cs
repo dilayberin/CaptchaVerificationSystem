@@ -1,25 +1,26 @@
-﻿using CaptchaVerificationSystem.Persistance.Context;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
-namespace CaptchaVerificationSystem.Persistance;
+using CaptchaVerificationSystem.Application.Interfaces.Services;
+using CaptchaVerificationSystem.Application.Services;
+using CaptchaVerificationSystem.Persistence.Context;
 
+namespace CaptchaVerificationSystem.Persistence;
 public static class ServiceRegistration
 {
-    public static IServiceCollection AddPersistenceServices(IServiceCollection services,
+    public static IServiceCollection AddPersistenceServices(
+        this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContext<CaptchaDbContext>(opt =>
             opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-        /*
-         * services.AddScoped<IImageReadRepository,ImageReadRepository>();
-       services.AddScoped<IImageWriteRepository, ImageWriteRepository>();
-         *
-         */
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IImageService, ImageService>();
+        services.AddScoped<ICaptchaGenerationService, CaptchaGenerationService>();
+        services.AddScoped<ICaptchaAttemptService, CaptchaAttemptService>();
+
         return services;
     }
-
-
 }

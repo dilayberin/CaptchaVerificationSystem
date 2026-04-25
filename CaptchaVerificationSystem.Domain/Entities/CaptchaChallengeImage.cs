@@ -4,8 +4,8 @@ namespace CaptchaVerificationSystem.Domain.Entities;
 
 public class CaptchaChallengeImage:BaseEntity
 {
-    public int CaptchaChallengeId { get; set; }
-    public int ImageId { get; set; }
+    public Guid CaptchaChallengeId { get; set; }
+    public Guid ImageId { get; set; }
     public int DisplayOrder { get; set; } //resmin ekranda gösterildiği yer
     public bool IsCorrect { get; set; }  //resim doğru kategoriden mi
     

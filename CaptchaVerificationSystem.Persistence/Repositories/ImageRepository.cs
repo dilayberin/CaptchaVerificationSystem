@@ -1,9 +1,9 @@
 ﻿using CaptchaVerificationSystem.Application.Interfaces.Repositories;
 using CaptchaVerificationSystem.Domain.Entities;
-using CaptchaVerificationSystem.Persistance.Context;
+using CaptchaVerificationSystem.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace CaptchaVerificationSystem.Persistance.Repositories;
+namespace CaptchaVerificationSystem.Persistence.Repositories;
 
 public class ImageRepository : RepositoryBase<Image>, IImageRepository
 {

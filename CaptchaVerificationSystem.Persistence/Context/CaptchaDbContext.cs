@@ -2,8 +2,7 @@
 using CaptchaVerificationSystem.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CaptchaVerificationSystem.Persistance.Context;
-
+namespace CaptchaVerificationSystem.Persistence.Context;
 public class CaptchaDbContext:DbContext
 {
     public CaptchaDbContext(DbContextOptions<CaptchaDbContext> options)

@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 using CaptchaVerificationSystem.Application.Interfaces.Repositories;
-using CaptchaVerificationSystem.Persistance.Context;
+using CaptchaVerificationSystem.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace CaptchaVerificationSystem.Persistance.Repositories;
+namespace CaptchaVerificationSystem.Persistence.Repositories;
 
 public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {

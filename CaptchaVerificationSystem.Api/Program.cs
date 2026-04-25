@@ -1,5 +1,5 @@
 using CaptchaVerificationSystem.Application;
-using CaptchaVerificationSystem.Persistance;
+using CaptchaVerificationSystem.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
