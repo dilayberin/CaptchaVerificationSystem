@@ -15,14 +15,14 @@ public class ImageService:IImageService
     
     public async Task<List<ImageDto>> GetAllActiveImagesAsync()
     {
-        //repository den gelen entity i dto ya dönüştürdük.
+        
         var images = await _repositoryManager.Image.GetAllActiveImagesAsync(false);
 
         return images.Select(image => new ImageDto
         {
             Id = image.Id,
-            FileName = image.FileName,
-            FilePath = image.FilePath,
+            FileName = image.FileName,          //repository den gelen entity i
+            FilePath = image.FilePath,          //dto ya dönüştürdük.
             Width = image.Width,
             Height = image.Height,
             IsActive = image.IsActive

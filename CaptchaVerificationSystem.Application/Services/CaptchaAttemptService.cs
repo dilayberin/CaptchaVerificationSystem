@@ -17,44 +17,47 @@ public class CaptchaAttemptService : ICaptchaAttemptService
 
     public async Task<bool> VerifyCaptchaAsync(Guid challengeId, List<Guid> selectedImageIds, int responseTimeMs)
     {
-        // captcha challenge getir
+        // ilgili ıd ye göre captcha challenge getir
         var challenge = await _repositoryManager.CaptchaChallenge
             .FindByCondition(x => x.Id == challengeId, true)
             .FirstOrDefaultAsync();
 
         if (challenge == null)
             return false;
+        
+        if (challenge.IsSolved)
+            return false;
 
-        // süre kontrolü
+        // süre kontrolü , 1 dk yi geçmiş mi
         if (challenge.ExpiresAt < DateTime.UtcNow)
             return false;
 
-        // doğru görselleri getir
+        //bu capctha ya ait (x.CaptchaChallengeId ) ve doğru görselleri (x.IsCorrect) getirir SADECE ID lerini.
         var correctImageIds = await _repositoryManager.CaptchaChallengeImage
             .FindByCondition(x => x.CaptchaChallengeId == challengeId && x.IsCorrect, false)
             .Select(x => x.Id)
             .ToListAsync();
 
-        // seçimleri karşılaştır
+        // seçimleri karşılaştır-->doğru seçilenler yanlış seçilenler
         var correctCount = selectedImageIds.Intersect(correctImageIds).Count();
         var wrongCount = selectedImageIds.Except(correctImageIds).Count();
-        var missedCorrect = correctImageIds.Except(selectedImageIds).Count();
+        var missedCorrect = correctImageIds.Except(selectedImageIds).Count(); //yanlış bilinen eleman
 
-        bool isSuccess =
+        bool isSuccess = 
             selectedImageIds.Count == correctImageIds.Count &&
             !correctImageIds.Except(selectedImageIds).Any();
         
-        // verification sonucu belirle
-        VerificationResult result;
+        
+        VerificationResult result; //doğrulamanın sonucunu döndürür
 
         if (isSuccess)
             result = VerificationResult.Human;
         else if (wrongCount >= 3)
-            result = VerificationResult.Bot;
+            result = VerificationResult.Bot;  //sonra geliştirilecek
         else
             result = VerificationResult.Suspicious;
 
-        // attempt kaydı oluştur
+        // attempt kaydı oluştur yani kullanıcının denemesi kayıt edilir
         var attempt = new CaptchaAttempt
         {
             CaptchaChallengeId = challengeId,
@@ -70,7 +73,7 @@ public class CaptchaAttemptService : ICaptchaAttemptService
 
         _repositoryManager.CaptchaAttempt.Create(attempt);
 
-        // seçilen resimleri kaydet
+        // kullanıcının seçtiği resimleri kaydet
         foreach (var imageId in selectedImageIds)
         {
             var selection = new CaptchaAttemptSelection
@@ -82,8 +85,9 @@ public class CaptchaAttemptService : ICaptchaAttemptService
             _repositoryManager.CaptchaAttemptSelection.Create(selection);
         }
 
-        // captcha çözüldü işaretle
-        challenge.IsSolved = true;
+        // captcha çözüldü işaretlenir ,aynı captcha tekrar çözülemez
+        if (isSuccess)
+            challenge.IsSolved = true;
 
         await _repositoryManager.SaveAsync();
 

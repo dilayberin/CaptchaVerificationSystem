@@ -83,7 +83,7 @@ public class CategoryService : ICategoryService
             .FirstOrDefaultAsync();  //şarta uyan ilk elemanı getir,yoksa null döndür
 
         if (category == null)
-            throw new Exception("Category not found");
+            throw new Exception("Kategori bulunamadı ! ");
 
         category.Name = dto.Name;
         category.DisplayName = dto.DisplayName;
