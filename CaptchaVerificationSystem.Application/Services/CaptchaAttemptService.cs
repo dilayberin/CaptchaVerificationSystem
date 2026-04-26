@@ -32,7 +32,7 @@ public class CaptchaAttemptService : ICaptchaAttemptService
         // doğru görselleri getir
         var correctImageIds = await _repositoryManager.CaptchaChallengeImage
             .FindByCondition(x => x.CaptchaChallengeId == challengeId && x.IsCorrect, false)
-            .Select(x => x.ImageId)
+            .Select(x => x.Id)
             .ToListAsync();
 
         // seçimleri karşılaştır
@@ -40,8 +40,10 @@ public class CaptchaAttemptService : ICaptchaAttemptService
         var wrongCount = selectedImageIds.Except(correctImageIds).Count();
         var missedCorrect = correctImageIds.Except(selectedImageIds).Count();
 
-        bool isSuccess = correctCount == correctImageIds.Count && wrongCount == 0;
-
+        bool isSuccess =
+            selectedImageIds.Count == correctImageIds.Count &&
+            !correctImageIds.Except(selectedImageIds).Any();
+        
         // verification sonucu belirle
         VerificationResult result;
 

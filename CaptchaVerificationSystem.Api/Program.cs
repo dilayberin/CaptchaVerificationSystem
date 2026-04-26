@@ -39,7 +39,7 @@ builder.Services.AddScoped<ICaptchaAttemptService, CaptchaAttemptService>();
 builder.Services.AddScoped<ICaptchaGenerationService, CaptchaGenerationService>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
-
+builder.Services.AddScoped<ICaptchaAttemptService, CaptchaAttemptService>();
 
 var app = builder.Build();
 

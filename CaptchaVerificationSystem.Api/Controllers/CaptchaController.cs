@@ -1,5 +1,6 @@
 ﻿using CaptchaVerificationSystem.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using CaptchaVerificationSystem.Application.DTOs.CaptchaDtos;
 
 namespace CaptchaVerificationSystem.Api.Controllers;
 
@@ -19,5 +20,19 @@ public class CaptchaController : ControllerBase
     {
         var captcha = await _serviceManager.CaptchaGenerationService.GenerateCaptchaAsync();
         return Ok(captcha);
+    }
+    [HttpPost("verify")]
+    public async Task<IActionResult> VerifyCaptcha([FromBody] VerifyCaptchaRequestDto request)
+    {
+        var result = await _serviceManager.CaptchaAttemptService.VerifyCaptchaAsync(
+            request.ChallengeId,
+            request.SelectedImageIds,
+            request.ResponseTimeMs
+        );
+
+        return Ok(new
+        {
+            success = result
+        });
     }
 }

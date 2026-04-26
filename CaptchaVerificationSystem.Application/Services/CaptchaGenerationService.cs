@@ -123,7 +123,7 @@ public class CaptchaGenerationService : ICaptchaGenerationService
             QuestionText = challenge.QuestionText,
             Images = challengeImages.Select(x => new CaptchaImageDto
             {
-                ImageId = x.ImageId,
+                ImageId = x.Id,
                 FilePath = captchaImages.First(i => i.Id == x.ImageId).FilePath,
                 DisplayOrder = x.DisplayOrder
             }).ToList()
