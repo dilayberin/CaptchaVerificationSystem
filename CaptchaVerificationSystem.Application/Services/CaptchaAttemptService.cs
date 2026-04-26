@@ -17,7 +17,7 @@ public class CaptchaAttemptService : ICaptchaAttemptService
 
     public async Task<bool> VerifyCaptchaAsync(Guid challengeId, List<Guid> selectedImageIds, int responseTimeMs)
     {
-        // 1️⃣ captcha challenge getir
+        // captcha challenge getir
         var challenge = await _repositoryManager.CaptchaChallenge
             .FindByCondition(x => x.Id == challengeId, true)
             .FirstOrDefaultAsync();
@@ -25,24 +25,24 @@ public class CaptchaAttemptService : ICaptchaAttemptService
         if (challenge == null)
             return false;
 
-        // 2️⃣ süre kontrolü
+        // süre kontrolü
         if (challenge.ExpiresAt < DateTime.UtcNow)
             return false;
 
-        // 3️⃣ doğru görselleri getir
+        // doğru görselleri getir
         var correctImageIds = await _repositoryManager.CaptchaChallengeImage
             .FindByCondition(x => x.CaptchaChallengeId == challengeId && x.IsCorrect, false)
             .Select(x => x.ImageId)
             .ToListAsync();
 
-        // 4️⃣ seçimleri karşılaştır
+        // seçimleri karşılaştır
         var correctCount = selectedImageIds.Intersect(correctImageIds).Count();
         var wrongCount = selectedImageIds.Except(correctImageIds).Count();
         var missedCorrect = correctImageIds.Except(selectedImageIds).Count();
 
         bool isSuccess = correctCount == correctImageIds.Count && wrongCount == 0;
 
-        // 5️⃣ verification sonucu belirle
+        // verification sonucu belirle
         VerificationResult result;
 
         if (isSuccess)
@@ -52,7 +52,7 @@ public class CaptchaAttemptService : ICaptchaAttemptService
         else
             result = VerificationResult.Suspicious;
 
-        // 6️⃣ attempt kaydı oluştur
+        // attempt kaydı oluştur
         var attempt = new CaptchaAttempt
         {
             CaptchaChallengeId = challengeId,
@@ -68,7 +68,7 @@ public class CaptchaAttemptService : ICaptchaAttemptService
 
         _repositoryManager.CaptchaAttempt.Create(attempt);
 
-        // 7️⃣ seçilen resimleri kaydet
+        // seçilen resimleri kaydet
         foreach (var imageId in selectedImageIds)
         {
             var selection = new CaptchaAttemptSelection
@@ -80,7 +80,7 @@ public class CaptchaAttemptService : ICaptchaAttemptService
             _repositoryManager.CaptchaAttemptSelection.Create(selection);
         }
 
-        // 8️⃣ captcha çözüldü işaretle
+        // captcha çözüldü işaretle
         challenge.IsSolved = true;
 
         await _repositoryManager.SaveAsync();

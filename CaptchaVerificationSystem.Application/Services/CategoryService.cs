@@ -86,6 +86,8 @@ public class CategoryService : ICategoryService
             throw new Exception("Category not found");
 
         category.Name = dto.Name;
+        category.DisplayName = dto.DisplayName;
+        category.IsActive = dto.IsActive;
                                                       //DTO ya dönüştürme
         await _repositoryManager.SaveAsync();
     }

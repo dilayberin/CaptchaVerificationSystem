@@ -22,7 +22,10 @@ public class ImageService:IImageService
         {
             Id = image.Id,
             FileName = image.FileName,
-            FilePath = image.FilePath
+            FilePath = image.FilePath,
+            Width = image.Width,
+            Height = image.Height,
+            IsActive = image.IsActive
         }).ToList();
     }
 
@@ -37,7 +40,10 @@ public class ImageService:IImageService
         {
             Id = image.Id,
             FileName = image.FileName,
-            FilePath = image.FilePath
+            FilePath = image.FilePath,
+            Width = image.Width,
+            Height = image.Height,
+            IsActive = image.IsActive
         };
     }
 
@@ -49,7 +55,10 @@ public class ImageService:IImageService
         {
             Id = image.Id,
             FileName = image.FileName,
-            FilePath = image.FilePath
+            FilePath = image.FilePath,
+            Width = image.Width,
+            Height = image.Height,
+            IsActive = image.IsActive
         }).ToList();
     }
 }

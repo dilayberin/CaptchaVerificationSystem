@@ -1,7 +1,9 @@
-﻿namespace CaptchaVerificationSystem.Application.Interfaces.Services;
+﻿using CaptchaVerificationSystem.Application.DTOs.CaptchaDtos;
+
+namespace CaptchaVerificationSystem.Application.Interfaces.Services;
 
 public interface ICaptchaGenerationService
 {
-    Task<Guid> GenerateCaptchaAsync();
+    Task<CaptchaChallengeDto> GenerateCaptchaAsync();
 
 }

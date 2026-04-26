@@ -6,7 +6,7 @@ namespace CaptchaVerificationSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CategoryController : ControllerBase
+public class CategoryController : ControllerBase //temel controller sınıfı,ASP.NET Core içinden gelir
 {
     private readonly IServiceManager _serviceManager;
 

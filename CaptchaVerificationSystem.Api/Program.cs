@@ -40,6 +40,7 @@ builder.Services.AddScoped<ICaptchaGenerationService, CaptchaGenerationService>(
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
+
 var app = builder.Build();
 
 // --------------------
@@ -48,6 +49,8 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 
 app.UseHttpsRedirection();
 
