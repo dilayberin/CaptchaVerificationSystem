@@ -23,7 +23,7 @@ public class CategoryController : ControllerBase //temel controller sınıfı,AS
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto)
+    public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto) //request’in body kısmından veri alır
     {
         var result = await _serviceManager.CategoryService.CreateAsync(dto);
         return Ok(result);
@@ -40,7 +40,7 @@ public class CategoryController : ControllerBase //temel controller sınıfı,AS
         return Ok(category);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id}")] //GÜNCELLEME
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCategoryDto dto)
     {
         await _serviceManager.CategoryService.UpdateAsync(id, dto);

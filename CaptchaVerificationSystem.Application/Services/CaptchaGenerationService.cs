@@ -40,7 +40,10 @@ public class CaptchaGenerationService : ICaptchaGenerationService
         //VT den gelen category listesini rastgele karıştırır -->SWAGGER TARAFINDA SHUFFLE İŞLEMİ
         var targetCategory = categories
             .OrderBy(x => Guid.NewGuid())
-            .First();
+            .FirstOrDefault();
+        if (targetCategory == null)
+            throw new Exception("Aktif kategori bulunamadı.");
+        
 
         // 3 Doğru image  ,ImageCategories de Id-Cat. eşleşmesini Id ile tutuyoruz , o yüzden sorgu "targetCategory.Id"
         var correctImages = await _repositoryManager.Image
@@ -56,7 +59,7 @@ public class CaptchaGenerationService : ICaptchaGenerationService
             .GetAllActiveImagesAsync(false);
 
         var incorrectImages = allImages
-            .Where(x => !correctImages.Any(c => c.Id == x.Id))
+            .Except(correctImages)
             .OrderBy(x => Guid.NewGuid())
             .Take(6)
             .ToList();

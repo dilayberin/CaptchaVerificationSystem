@@ -26,7 +26,7 @@ public class CaptchaController : ControllerBase
     {
         var result = await _serviceManager.CaptchaAttemptService.VerifyCaptchaAsync(
             request.ChallengeId,
-            request.SelectedImageIds,
+            request.SelectedChallengeImageIds,
             request.ResponseTimeMs
         );
 

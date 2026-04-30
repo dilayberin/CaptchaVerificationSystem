@@ -10,6 +10,8 @@ public class CaptchaAttemptSelection : BaseEntity  ////her resim için Id, capch
 
     public bool IsSelected { get; set; }
 
+    public bool IsCorrectSelection { get; set; }
+
     public CaptchaAttempt CaptchaAttempt { get; set; } = null!;
 
     public CaptchaChallengeImage CaptchaChallengeImage { get; set; } = null!;
