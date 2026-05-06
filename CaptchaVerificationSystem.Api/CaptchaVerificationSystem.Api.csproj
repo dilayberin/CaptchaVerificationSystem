@@ -21,4 +21,8 @@
         <ProjectReference Include="..\CaptchaVerificationSystem.Persistence\CaptchaVerificationSystem.Persistence.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\" />
+    </ItemGroup>
+
 </Project>

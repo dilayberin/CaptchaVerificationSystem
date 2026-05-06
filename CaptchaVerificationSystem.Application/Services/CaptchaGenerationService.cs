@@ -59,7 +59,7 @@ public class CaptchaGenerationService : ICaptchaGenerationService
             .GetAllActiveImagesAsync(false);
 
         var incorrectImages = allImages
-            .Except(correctImages)
+            .Where(x => !correctImages.Any(c => c.Id == x.Id))
             .OrderBy(x => Guid.NewGuid())
             .Take(6)
             .ToList();
@@ -91,7 +91,7 @@ public class CaptchaGenerationService : ICaptchaGenerationService
             TargetCategoryId = targetCategory.Id,
             QuestionText = $"İçinde {targetCategory.Name} olan tüm resimleri seçiniz",
             CreatedAt = DateTime.UtcNow,  //DateTime tek başına bir zaman üretmez
-            ExpiresAt = DateTime.UtcNow.AddMinutes(1),
+            ExpiresAt = DateTime.UtcNow.AddMinutes(5), //1 DK YE DÜŞÜRÜLECEK
             IsSolved = false
         };
 
@@ -106,7 +106,6 @@ public class CaptchaGenerationService : ICaptchaGenerationService
             {
                 Id = Guid.NewGuid(),  //CaptchaChallengeImage Id si
                 CaptchaChallengeId = challenge.Id,
-                ImageId = captchaImages[i].Id,
                 DisplayOrder = i,  // ekranda kaçıncı sırada olacak, 9 resimden hangisi
                 IsCorrect = selectedCorrect.Any(x => x.Id == captchaImages[i].Id)
             });
@@ -124,10 +123,10 @@ public class CaptchaGenerationService : ICaptchaGenerationService
         {
             ChallengeId = challenge.Id,
             QuestionText = challenge.QuestionText,
-            Images = challengeImages.Select(x => new CaptchaImageDto
+            Images = challengeImages.Select((x, index) => new CaptchaImageDto
             {
                 ImageId = x.Id,
-                FilePath = captchaImages.First(i => i.Id == x.ImageId).FilePath,
+                FilePath = captchaImages[index].FilePath,
                 DisplayOrder = x.DisplayOrder
             }).ToList()
         };

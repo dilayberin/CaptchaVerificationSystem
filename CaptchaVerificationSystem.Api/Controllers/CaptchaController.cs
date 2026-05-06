@@ -1,6 +1,7 @@
 ﻿using CaptchaVerificationSystem.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using CaptchaVerificationSystem.Application.DTOs.CaptchaDtos;
+using CaptchaVerificationSystem.Api.FileServices;
 
 namespace CaptchaVerificationSystem.Api.Controllers;
 
@@ -9,10 +10,12 @@ namespace CaptchaVerificationSystem.Api.Controllers;
 public class CaptchaController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
+    private readonly CaptchaFileService _fileService;
 
-    public CaptchaController(IServiceManager serviceManager)
+    public CaptchaController(IServiceManager serviceManager, CaptchaFileService fileService)
     {
         _serviceManager = serviceManager;
+        _fileService = fileService;
     }
 
     [HttpPost("generate")]
@@ -34,5 +37,11 @@ public class CaptchaController : ControllerBase
         {
             success = result
         });
+    }
+    [HttpPost("generate-file")]
+    public async Task<IActionResult> GenerateCaptchaFromFiles()
+    {
+        var result = await _fileService.GenerateCaptchaAsync();
+        return Ok(result);
     }
 }
