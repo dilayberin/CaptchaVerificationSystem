@@ -61,6 +61,8 @@ public class CaptchaAnalyticsService : ICaptchaAnalyticsService
             BotCount = botCount,
             SuccessRate = Math.Round(successRate, 2),
             AverageResponseTimeMs = Math.Round(averageResponseTimeMs, 2),
-            AverageScore = (double)Math.Round(averageScore, 2)        };
+            AverageScore = (double)Math.Round(averageScore, 2)
+            
+        };
     }
 }

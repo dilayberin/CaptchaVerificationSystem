@@ -6,4 +6,5 @@ public interface IServiceManager
     IImageService ImageService { get; }
     ICaptchaGenerationService CaptchaGenerationService { get; }
     ICaptchaAttemptService CaptchaAttemptService { get; }
+    ICaptchaAnalyticsService CaptchaAnalyticsService { get; }
 }

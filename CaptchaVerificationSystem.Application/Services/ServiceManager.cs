@@ -9,16 +9,19 @@ public class ServiceManager : IServiceManager
     public ICaptchaGenerationService CaptchaGenerationService { get; }
     public ICaptchaAttemptService CaptchaAttemptService { get; }
     
+    public ICaptchaAnalyticsService CaptchaAnalyticsService { get; }
     public ServiceManager(
         ICategoryService categoryService,
         IImageService imageService,
         ICaptchaGenerationService captchaGenerationService,
-        ICaptchaAttemptService captchaAttemptService)
+        ICaptchaAttemptService captchaAttemptService,
+        ICaptchaAnalyticsService captchaAnalyticsService)
     {
         CategoryService = categoryService;
         ImageService = imageService;
         CaptchaGenerationService = captchaGenerationService;
         CaptchaAttemptService = captchaAttemptService;
+        CaptchaAnalyticsService = captchaAnalyticsService;
 
     }
 }

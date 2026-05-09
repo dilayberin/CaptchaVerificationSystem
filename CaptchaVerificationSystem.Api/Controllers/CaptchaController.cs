@@ -44,4 +44,5 @@ public class CaptchaController : ControllerBase
         var result = await _fileService.GenerateCaptchaAsync();
         return Ok(result);
     }
+ 
 }

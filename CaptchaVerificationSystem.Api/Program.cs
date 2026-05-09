@@ -32,6 +32,18 @@ builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<ICaptchaAttemptService, CaptchaAttemptService>();
 builder.Services.AddScoped<ICaptchaAnalyticsService, CaptchaAnalyticsService>();
 builder.Services.AddScoped<CaptchaFileService>();
+builder.Services.AddScoped<ICaptchaAnalyticsService,
+    CaptchaAnalyticsService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 
 var app = builder.Build();
 
@@ -40,10 +52,11 @@ app.UseSwaggerUI();
 
 app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 
+
 app.UseStaticFiles();
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllers();

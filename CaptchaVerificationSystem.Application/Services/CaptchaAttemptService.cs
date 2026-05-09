@@ -70,6 +70,14 @@ public class CaptchaAttemptService : ICaptchaAttemptService
         var correctCount = selectedChallengeImageIds.Intersect(correctImageIds).Count();
         var wrongCount = selectedChallengeImageIds.Except(correctImageIds).Count();
         var missedCorrect = correctImageIds.Except(selectedChallengeImageIds).Count(); //yanlış bilinen eleman
+        
+        var wrongSelectedIds = selectedChallengeImageIds
+            .Except(correctImageIds)
+            .ToList();
+
+        var missedImageIds = correctImageIds
+            .Except(selectedChallengeImageIds)
+            .ToList();
 
         bool isSuccess =
             wrongCount == 0 &&
@@ -157,9 +165,12 @@ public class CaptchaAttemptService : ICaptchaAttemptService
             WrongSelections = wrongCount,
             MissedSelections = missedCorrect,
             Score = score,
+            ResponseTimeMs = responseTimeMs,
             RiskLevel = riskLevel,
             Result = result,
-            Message = isSuccess ? "Captcha doğrulandı!" : "Captcha doğrulaması başarısız!"
+            Message = isSuccess
+                ? "Captcha doğrulandı!"
+                : "Captcha doğrulaması başarısız!"
         };
     }
 }

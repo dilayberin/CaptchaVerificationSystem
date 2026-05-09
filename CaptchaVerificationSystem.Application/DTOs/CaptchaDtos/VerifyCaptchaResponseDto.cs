@@ -14,9 +14,14 @@ public class VerifyCaptchaResponseDto
 
     public int Score { get; set; }
 
+    public int ResponseTimeMs { get; set; }
+
     public RiskLevel RiskLevel { get; set; }
 
     public VerificationResult Result { get; set; }
 
     public string Message { get; set; } = string.Empty;
+    public List<string> WrongSelectedImages { get; set; } = new();
+
+    public List<string> MissedImages { get; set; } = new();
 }
