@@ -89,9 +89,9 @@ public class CaptchaGenerationService : ICaptchaGenerationService
         {
             Id = Guid.NewGuid(),
             TargetCategoryId = targetCategory.Id,
-            QuestionText = $"İçinde {targetCategory.Name} olan tüm resimleri seçiniz",
+            QuestionText = $"Select all images with {targetCategory.Name} ",
             CreatedAt = DateTime.UtcNow,  //DateTime tek başına bir zaman üretmez
-            ExpiresAt = DateTime.UtcNow.AddMinutes(5), //1 DK YE DÜŞÜRÜLECEK
+            ExpiresAt = DateTime.UtcNow.AddMinutes(1), //1 DK YE DÜŞÜRÜLECEK
             IsSolved = false
         };
 

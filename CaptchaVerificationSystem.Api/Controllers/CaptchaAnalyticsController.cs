@@ -21,4 +21,12 @@ public class CaptchaAnalyticsController : ControllerBase
 
         return Ok(statistics);
     }
+    
+    [HttpGet("recent-attempts")]
+    public async Task<IActionResult> GetRecentAttempts()
+    {
+        var result = await _captchaAnalyticsService.GetRecentAttemptsAsync();
+
+        return Ok(result);
+    }
 }

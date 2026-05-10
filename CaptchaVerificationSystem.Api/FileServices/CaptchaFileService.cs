@@ -67,7 +67,7 @@ public class CaptchaFileService
         {
             Id = Guid.NewGuid(),
             TargetCategoryId = categoryEntity.Id, 
-            QuestionText = $"İçinde {targetCategory} olan tüm resimleri seçiniz",
+            QuestionText = $"Select all images with {categoryEntity.DisplayName ?? categoryEntity.Name}",
             CreatedAt = DateTime.UtcNow,
             ExpiresAt = DateTime.UtcNow.AddMinutes(5),
             IsSolved = false

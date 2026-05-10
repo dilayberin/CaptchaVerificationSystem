@@ -40,6 +40,9 @@ namespace CaptchaVerificationSystem.Persistance.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
                     b.Property<int>("MissedCorrectCount")
                         .HasColumnType("integer");
 
@@ -57,6 +60,9 @@ namespace CaptchaVerificationSystem.Persistance.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("text");
 
                     b.Property<int>("WrongSelectionCount")
                         .HasColumnType("integer");

@@ -11,7 +11,9 @@ public class CaptchaAttempt : BaseEntity
     public DateTime AttemptedAt { get; set; }
 
     public int ResponseTimeMs { get; set; }
-
+    public string? IpAddress { get; set; }
+    
+    public string? UserAgent { get; set; }
     public int CorrectSelectionCount { get; set; }
 
     public int WrongSelectionCount { get; set; }

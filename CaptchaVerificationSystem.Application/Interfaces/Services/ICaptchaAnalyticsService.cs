@@ -5,4 +5,6 @@ namespace CaptchaVerificationSystem.Application.Interfaces.Services;
 public interface ICaptchaAnalyticsService
 {
     Task<CaptchaStatisticsDto> GetStatisticsAsync();
+    Task<List<AttemptHistoryDto>> GetRecentAttemptsAsync();
+    
 }

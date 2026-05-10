@@ -10,6 +10,7 @@ import {
 function AnalyticsDashboard() {
 
     const [stats, setStats] = useState(null);
+    const [recentAttempts, setRecentAttempts] = useState([]);
 
     useEffect(() => {
 
@@ -19,13 +20,23 @@ function AnalyticsDashboard() {
 
     const loadStatistics = async () => {
 
-        const response = await fetch(
+        // statistics
+        const statsResponse = await fetch(
             "http://localhost:5015/api/CaptchaAnalytics/statistics"
         );
 
-        const data = await response.json();
+        const statsData = await statsResponse.json();
 
-        setStats(data);
+        setStats(statsData);
+
+        // recent attempts
+        const attemptsResponse = await fetch(
+            "http://localhost:5015/api/CaptchaAnalytics/recent-attempts"
+        );
+
+        const attemptsData = await attemptsResponse.json();
+
+        setRecentAttempts(attemptsData);
     };
 
     if (!stats) {
@@ -109,6 +120,7 @@ function AnalyticsDashboard() {
             >
 
                 <div
+                    className="analytics-card"
                     style={{
                         background: "white",
                         padding: "20px",
@@ -152,6 +164,114 @@ function AnalyticsDashboard() {
                     </PieChart>
 
                 </div>
+
+            </div>
+
+            <div
+                style={{
+                    marginTop: "40px",
+                    background: "white",
+                    borderRadius: "20px",
+                    padding: "25px",
+                    boxShadow: "0 10px 20px rgba(0,0,0,0.08)"
+                }}
+            >
+
+                <h2
+                    style={{
+                        marginBottom: "20px",
+                        textAlign: "center"
+                    }}
+                >
+                    Recent Attempts
+                </h2>
+
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse"
+                    }}
+                >
+
+                    <thead>
+
+                    <tr
+                        style={{
+                            background: "#eef2ff"
+                        }}
+                    >
+
+                        <th style={{padding: "14px"}}>Result</th>
+                        <th style={{padding: "14px"}}>Risk</th>
+                        <th style={{padding: "14px"}}>Score</th>
+                        <th style={{padding: "14px"}}>Response Time</th>
+                        <th style={{padding: "14px"}}>IP Address</th>
+                        <th style={{padding: "14px"}}>User Agent</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {recentAttempts.map((attempt, index) => (
+
+                        <tr
+                            key={index}
+                            style={{
+                                textAlign: "center",
+                                borderTop: "1px solid #ddd"
+                            }}
+                        >
+
+                            <td
+                                style={{
+                                    padding: "14px",
+                                    fontWeight: "bold",
+                                    color:
+                                        attempt.result === "Bot"
+                                            ? "#ef4444"
+                                            : attempt.result === "Suspicious"
+                                                ? "#f59e0b"
+                                                : "#10b981"
+                                }}
+                            >
+                                {attempt.result}
+                            </td>
+
+                            <td style={{padding: "14px"}}>
+                                {attempt.riskLevel}
+                            </td>
+
+                            <td style={{padding: "14px"}}>
+                                {attempt.score}
+                            </td>
+
+                            <td style={{padding: "14px"}}>
+                                {attempt.responseTimeMs} ms
+                            </td>
+
+                            <td style={{padding: "14px"}}>
+                                {attempt.ipAddress}
+                            </td>
+                            <td
+                                style={{
+                                    padding: "14px",
+                                    maxWidth: "250px",
+                                    wordBreak: "break-word",
+                                    fontSize: "12px"
+                                }}
+                            >
+                                {attempt.userAgent}
+                            </td>
+
+                        </tr>
+
+                    ))}
+
+                    </tbody>
+
+                </table>
 
             </div>
 

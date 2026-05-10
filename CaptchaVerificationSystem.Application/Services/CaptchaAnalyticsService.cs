@@ -65,4 +65,24 @@ public class CaptchaAnalyticsService : ICaptchaAnalyticsService
             
         };
     }
+    public async Task<List<AttemptHistoryDto>> GetRecentAttemptsAsync()
+    {
+        return await _repositoryManager.CaptchaAttempt
+            .FindAll(false)
+            .OrderByDescending(x => x.AttemptedAt)
+            .Take(10)
+            .Select(x => new AttemptHistoryDto
+            {
+                Result = x.Result.ToString(),
+                RiskLevel = x.RiskLevel.ToString(),
+                Score = x.Score,
+                ResponseTimeMs = x.ResponseTimeMs,
+
+                IpAddress = x.IpAddress,
+                UserAgent = x.UserAgent,
+
+                AttemptedAt = x.AttemptedAt
+            })
+            .ToListAsync();
+    }
 }

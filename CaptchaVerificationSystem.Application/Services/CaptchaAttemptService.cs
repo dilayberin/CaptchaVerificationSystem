@@ -16,7 +16,12 @@ public class CaptchaAttemptService : ICaptchaAttemptService
         _repositoryManager = repositoryManager;
     }
 
-    public async Task<VerifyCaptchaResponseDto> VerifyCaptchaAsync(Guid challengeId, List<Guid> selectedChallengeImageIds, int responseTimeMs)    {
+    public async Task<VerifyCaptchaResponseDto> VerifyCaptchaAsync(
+        Guid challengeId,
+        List<Guid> selectedChallengeImageIds,
+        int responseTimeMs,
+        string? ipAddress,
+        string? userAgent)   {
         // ilgili ıd ye göre captcha challenge getir
         var challenge = await _repositoryManager.CaptchaChallenge
             .FindByCondition(x => x.Id == challengeId, true)
@@ -89,6 +94,18 @@ public class CaptchaAttemptService : ICaptchaAttemptService
 
         score -= wrongCount * 20;
         score -= missedCorrect * 10;
+        // tüm görseller seçildiyse
+        if (selectedChallengeImageIds.Count == 9)
+        {
+            score -= 40;
+        }
+
+        // hiç seçim yapılmadıysa
+        if (selectedChallengeImageIds.Count == 0)
+        {
+            score -= 50;
+        }
+
         
         int overSelection = selectedChallengeImageIds.Count - correctImageIds.Count; //gereğinde fazla seçim 
         if (overSelection > 1)                                                   //yapılmış mı? bot 3 resim yerine
@@ -98,6 +115,27 @@ public class CaptchaAttemptService : ICaptchaAttemptService
 
         if (responseTimeMs < 1000)
             score -= 30;
+        
+        if (!string.IsNullOrEmpty(userAgent))
+        {
+            var lowerUserAgent = userAgent.ToLower();
+
+            if (lowerUserAgent.Contains("python"))
+                score -= 40;
+
+            if (lowerUserAgent.Contains("selenium"))
+                score -= 40;
+
+            if (lowerUserAgent.Contains("headless"))
+                score -= 40;
+
+            if (lowerUserAgent.Contains("postman"))
+                score -= 30;
+
+            if (lowerUserAgent.Contains("curl"))
+                score -= 30;
+        }
+        
         score = Math.Max(score, 0);
         
         RiskLevel riskLevel;
@@ -128,6 +166,8 @@ public class CaptchaAttemptService : ICaptchaAttemptService
             CaptchaChallengeId = challengeId,
             AttemptedAt = DateTime.UtcNow,
             ResponseTimeMs = responseTimeMs,
+            IpAddress = ipAddress,
+            UserAgent = userAgent,
             CorrectSelectionCount = correctCount,
             WrongSelectionCount = wrongCount,
             MissedCorrectCount = missedCorrect,
